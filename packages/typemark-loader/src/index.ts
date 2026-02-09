@@ -1,1 +1,1 @@
-import "./plugin.ts";
+import "./plugin";

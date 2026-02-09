@@ -6,7 +6,8 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "tsdown": "^0.20.3"
   },
   "peerDependencies": {
     "typescript": "^5"

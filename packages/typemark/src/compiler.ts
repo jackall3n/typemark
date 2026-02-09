@@ -8,13 +8,10 @@ import type { ParsedTemplate, Template } from "./types.ts";
 export function compile(parsed: ParsedTemplate): Template {
   const { propKeys, body } = parsed;
 
-  const destructure =
-    propKeys.length > 0 ? `const { ${propKeys.join(", ")} } = props; ` : "";
+  const destructure = propKeys.length > 0 ? `const { ${propKeys.join(", ")} } = props; ` : "";
 
   const fnBody = `${destructure}return \`${body}\`;`;
-  const renderFn = new Function("props", fnBody) as (
-    props: Record<string, unknown>,
-  ) => string;
+  const renderFn = new Function("props", fnBody) as (props: Record<string, unknown>) => string;
 
   return {
     render: renderFn,
@@ -29,13 +26,9 @@ export function compile(parsed: ParsedTemplate): Template {
 export function compileToString(parsed: ParsedTemplate): string {
   const { propKeys, body } = parsed;
 
-  const destructure =
-    propKeys.length > 0 ? `const { ${propKeys.join(", ")} } = props;` : "";
+  const destructure = propKeys.length > 0 ? `const { ${propKeys.join(", ")} } = props;` : "";
 
-  const escapedRaw = body
-    .replace(/\\/g, "\\\\")
-    .replace(/`/g, "\\`")
-    .replace(/\$\{/g, "\\${");
+  const escapedRaw = body.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
 
   const lines = ["export default {"];
   lines.push("  render(props) {");
@@ -47,5 +40,5 @@ export function compileToString(parsed: ParsedTemplate): string {
   lines.push(`  raw: \`${escapedRaw}\``);
   lines.push("};");
 
-  return lines.join("\n") + "\n";
+  return `${lines.join("\n")}\n`;
 }

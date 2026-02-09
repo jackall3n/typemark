@@ -32,7 +32,10 @@ export function parse(source: string): ParsedTemplate {
  * Split the source into frontmatter content and template body.
  * The body has its first leading newline stripped.
  */
-function splitFrontmatter(source: string): { frontmatter: string; body: string } {
+function splitFrontmatter(source: string): {
+  frontmatter: string;
+  body: string;
+} {
   const firstIndex = source.indexOf(FRONTMATTER_DELIMITER);
   if (firstIndex === -1) {
     throw new Error("Missing frontmatter: no opening `---` found");
@@ -67,10 +70,9 @@ function extractImports(frontmatter: string): string[] {
 function extractPreamble(frontmatter: string): string[] {
   const declarations: string[] = [];
   const pattern = /(?:interface|type)\s+(?!Props\b)(\w+)/g;
-  let match;
 
-  while ((match = pattern.exec(frontmatter)) !== null) {
-    const start = match.index;
+  for (const match of frontmatter.matchAll(pattern)) {
+    const start = match.index ?? 0;
     // For interfaces, find the matching closing brace
     if (frontmatter.slice(start).startsWith("interface")) {
       const openBrace = frontmatter.indexOf("{", start);

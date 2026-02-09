@@ -1,4 +1,4 @@
-import { test, expect, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { compile, compileToString } from "../src/compiler.ts";
 import { parse } from "../src/parser.ts";
 
@@ -145,9 +145,7 @@ Use \\\`backticks\\\` here: \${code}`);
     const output = compileToString(parsed);
 
     // In the raw property, backticks must be escaped so the template literal is valid
-    const rawLine = output
-      .split("\n")
-      .find((line) => line.trimStart().startsWith("raw:"));
+    const rawLine = output.split("\n").find((line) => line.trimStart().startsWith("raw:"));
     expect(rawLine).toBeDefined();
     expect(rawLine).toContain("\\`");
   });
@@ -163,15 +161,11 @@ Hello, \${name}!`);
     const output = compileToString(parsed);
 
     // The render function should have the live interpolation
-    const renderLine = output
-      .split("\n")
-      .find((line) => line.includes("return `"));
+    const renderLine = output.split("\n").find((line) => line.includes("return `"));
     expect(renderLine).toContain("${name}");
 
     // The raw property should have escaped interpolation
-    const rawLine = output
-      .split("\n")
-      .find((line) => line.trimStart().startsWith("raw:"));
+    const rawLine = output.split("\n").find((line) => line.trimStart().startsWith("raw:"));
     expect(rawLine).toContain("\\${name}");
   });
 
@@ -200,12 +194,10 @@ interface Props {
 
     // Replace "export default" with a variable assignment so we can eval it
     const evalCode = output.replace("export default", "var __module__ =");
-    const fn = new Function(evalCode + "\nreturn __module__;");
+    const fn = new Function(`${evalCode}\nreturn __module__;`);
     const mod = fn();
 
-    expect(mod.render({ name: "Eve", age: 25 })).toBe(
-      "Eve is 25 years old."
-    );
+    expect(mod.render({ name: "Eve", age: 25 })).toBe("Eve is 25 years old.");
     expect(typeof mod.raw).toBe("string");
   });
 });

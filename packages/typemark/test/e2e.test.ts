@@ -1,5 +1,5 @@
-import { test, expect, describe } from "bun:test";
-import { parse, compile, compileToString, generateDts } from "../src/index.ts";
+import { describe, expect, test } from "bun:test";
+import { compile, compileToString, generateDts, parse } from "../src/index.ts";
 
 describe("end-to-end", () => {
   describe("parse -> compile -> render with basic.mdt content", () => {
@@ -28,9 +28,7 @@ Hello, \${user.firstName}. You are \${user.age}!`;
       const parsed = parse(source);
       const template = compile(parsed);
 
-      expect(template.raw).toBe(
-        "Hello, ${user.firstName}. You are ${user.age}!"
-      );
+      expect(template.raw).toBe("Hello, ${user.firstName}. You are ${user.age}!");
     });
   });
 
@@ -48,16 +46,11 @@ interface Props {
       const moduleString = compileToString(parsed);
 
       // Evaluate the module string to get a template object
-      const evalCode = moduleString.replace(
-        "export default",
-        "var __module__ ="
-      );
-      const fn = new Function(evalCode + "\nreturn __module__;");
+      const evalCode = moduleString.replace("export default", "var __module__ =");
+      const fn = new Function(`${evalCode}\nreturn __module__;`);
       const template = fn();
 
-      expect(template.render({ greeting: "Hey", name: "World" })).toBe(
-        "Hey, World!"
-      );
+      expect(template.render({ greeting: "Hey", name: "World" })).toBe("Hey, World!");
       expect(typeof template.raw).toBe("string");
       expect(template.raw).toContain("${greeting}");
     });
@@ -73,11 +66,8 @@ Value: \${x}`;
       const parsed = parse(source);
       const moduleString = compileToString(parsed);
 
-      const evalCode = moduleString.replace(
-        "export default",
-        "var __module__ ="
-      );
-      const fn = new Function(evalCode + "\nreturn __module__;");
+      const evalCode = moduleString.replace("export default", "var __module__ =");
+      const fn = new Function(`${evalCode}\nreturn __module__;`);
       const template = fn();
 
       // raw should contain the literal "${x}" as text, not an interpolated value
@@ -185,12 +175,8 @@ interface Props {
       const parsed = parse(source);
       const template = compile(parsed);
 
-      expect(template.render({ isAdmin: true, name: "Alice" })).toBe(
-        "Admin: Alice"
-      );
-      expect(template.render({ isAdmin: false, name: "Bob" })).toBe(
-        "User: Bob"
-      );
+      expect(template.render({ isAdmin: true, name: "Alice" })).toBe("Admin: Alice");
+      expect(template.render({ isAdmin: false, name: "Bob" })).toBe("User: Bob");
     });
 
     test("renders method calls on props", () => {
@@ -233,9 +219,7 @@ Items: \${items.join(", ")}`;
       const parsed = parse(source);
       const template = compile(parsed);
 
-      expect(
-        template.render({ items: ["apple", "banana", "cherry"] })
-      ).toBe("Items: apple, banana, cherry");
+      expect(template.render({ items: ["apple", "banana", "cherry"] })).toBe("Items: apple, banana, cherry");
     });
   });
 });

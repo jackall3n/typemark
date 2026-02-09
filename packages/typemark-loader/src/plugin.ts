@@ -1,5 +1,5 @@
 import { plugin } from "bun";
-import { parse, compileToString } from "typemark";
+import { compileToString, parse } from "typemark";
 
 plugin({
   name: "typemark",

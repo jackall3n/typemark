@@ -1,5 +1,5 @@
-import type { ParsedTemplate } from "./types.ts";
 import { parse } from "./parser.ts";
+import type { ParsedTemplate } from "./types.ts";
 
 /**
  * Generate a `.d.ts` declaration file from a parsed .mdt template.

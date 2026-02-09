@@ -1,0 +1,41 @@
+name: Codegen Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.mdt"
+      - "packages/typemark/src/**"
+  pull_request:
+    paths:
+      - "**/*.mdt"
+      - "packages/typemark/src/**"
+
+concurrency:
+  group: codegen-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  codegen-check:
+    name: Verify generated types
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Generate .d.ts files
+        run: bun packages/typemark/src/cli.ts generate "examples/*.mdt"
+
+      - name: Check for uncommitted changes
+        run: |
+          if ! git diff --exit-code; then
+            echo "::error::Generated .d.ts files are out of date. Run \`bunx typemark generate\` and commit the results."
+            exit 1
+          fi

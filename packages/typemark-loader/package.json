@@ -1,14 +1,25 @@
 {
   "name": "typemark-loader",
   "version": "0.1.0",
+  "description": "Bun plugin for importing .mdt files with full type safety",
   "type": "module",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "import": "./src/index.ts",
-      "types": "./src/index.ts"
-    }
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "prepublishOnly": "bun run build"
   },
   "dependencies": {
     "typemark": "workspace:*"

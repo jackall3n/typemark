@@ -1,4 +1,4 @@
-import { test, expect, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { parse } from "../src/parser.ts";
 
 describe("parse", () => {
@@ -29,9 +29,7 @@ Hello, \${user.firstName}. You are \${user.age}!`;
 
     test("extracts the template body after the closing ---", () => {
       const result = parse(source);
-      expect(result.body).toBe(
-        "Hello, ${user.firstName}. You are ${user.age}!"
-      );
+      expect(result.body).toBe("Hello, ${user.firstName}. You are ${user.age}!");
     });
 
     test("extracts only top-level propKeys", () => {
@@ -54,9 +52,7 @@ Hello, \${user.firstName}. You are \${user.age}!`;
 
     test("extracts import type statements", () => {
       const result = parse(source);
-      expect(result.imports).toEqual([
-        'import type { User } from "@prisma/client";',
-      ]);
+      expect(result.imports).toEqual(['import type { User } from "@prisma/client";']);
     });
 
     test("extracts the propsBody correctly alongside imports", () => {
@@ -118,13 +114,7 @@ interface Props {
 
   describe("error handling", () => {
     test("throws when missing opening ---", () => {
-      const source = `interface Props { name: string }
----
-Hello`;
-      // The source above has no "---" before "interface Props" line,
-      // but actually "---" appears on line 2 -- let's use a source with no --- at all
-      const badSource = `no frontmatter at all`;
-      expect(() => parse(badSource)).toThrow("no opening `---` found");
+      expect(() => parse("no frontmatter at all")).toThrow("no opening `---` found");
     });
 
     test("throws when missing closing ---", () => {

@@ -1,4 +1,4 @@
-import { test, expect, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { generateDts, generateDtsForFile } from "../src/codegen.ts";
 import { parse } from "../src/parser.ts";
 
@@ -47,9 +47,7 @@ Hello, \${user.firstName}!`);
 
     // A blank line should separate imports from declaration
     const lines = dts.split("\n");
-    const importLineIdx = lines.findIndex((l) =>
-      l.includes('import type { User }')
-    );
+    const importLineIdx = lines.findIndex((l) => l.includes("import type { User }"));
     expect(lines[importLineIdx + 1]).toBe("");
   });
 
@@ -111,9 +109,7 @@ interface Props {
 
 describe("generateDtsForFile", () => {
   test("works with actual .mdt file (examples/basic.mdt)", async () => {
-    const dts = await generateDtsForFile(
-      "/Users/jack/dev/typemark/examples/basic.mdt"
-    );
+    const dts = await generateDtsForFile("/Users/jack/dev/typemark/examples/basic.mdt");
 
     // Should contain the template declaration
     expect(dts).toContain('import("typemark").Template<{');
@@ -126,9 +122,7 @@ describe("generateDtsForFile", () => {
   });
 
   test("works with import.mdt file that has type imports", async () => {
-    const dts = await generateDtsForFile(
-      "/Users/jack/dev/typemark/examples/import.mdt"
-    );
+    const dts = await generateDtsForFile("/Users/jack/dev/typemark/examples/import.mdt");
 
     // Should include the import statement
     expect(dts).toContain('import type { User } from "@prisma/client";');

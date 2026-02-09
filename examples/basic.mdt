@@ -1,0 +1,10 @@
+---
+interface Props {
+    user: {
+        firstName: string;
+        age: number;
+    }
+}
+---
+
+Hello, ${user.firstName}. You are ${user.age}!

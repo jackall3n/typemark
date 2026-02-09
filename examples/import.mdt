@@ -1,0 +1,9 @@
+---
+import type { User } from "@prisma/client";
+
+interface Props {
+    user: User
+}
+---
+
+Hello, ${user.firstName}. You are ${user.age}!

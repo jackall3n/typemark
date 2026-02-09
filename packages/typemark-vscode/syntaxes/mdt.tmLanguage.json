@@ -1,0 +1,72 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Markdown Template",
+  "scopeName": "source.mdt",
+  "patterns": [
+    { "include": "#frontmatter" },
+    { "include": "#body" }
+  ],
+  "repository": {
+    "frontmatter": {
+      "begin": "\\A(---)\\s*$",
+      "end": "^(---)\\s*$",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.frontmatter.begin.mdt" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.frontmatter.end.mdt" }
+      },
+      "name": "meta.frontmatter.mdt",
+      "contentName": "meta.embedded.block.typescript",
+      "patterns": [
+        { "include": "source.ts" }
+      ]
+    },
+    "body": {
+      "begin": "(?<=^---\\s*$\\n)",
+      "end": "\\z",
+      "name": "meta.body.mdt",
+      "contentName": "text.html.markdown",
+      "patterns": [
+        { "include": "#template-expression" },
+        { "include": "#escaped-dollar" }
+      ]
+    },
+    "template-expression": {
+      "begin": "(\\$\\{)",
+      "end": "(\\})",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.template-expression.begin.mdt" }
+      },
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.template-expression.end.mdt" }
+      },
+      "name": "meta.template.expression.mdt",
+      "contentName": "meta.embedded.line.typescript",
+      "patterns": [
+        { "include": "#nested-braces" },
+        { "include": "source.ts#expression" },
+        { "include": "source.ts" }
+      ]
+    },
+    "nested-braces": {
+      "begin": "\\{",
+      "end": "\\}",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.block.mdt" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.mdt" }
+      },
+      "patterns": [
+        { "include": "#nested-braces" },
+        { "include": "source.ts#expression" },
+        { "include": "source.ts" }
+      ]
+    },
+    "escaped-dollar": {
+      "match": "\\\\\\$",
+      "name": "constant.character.escape.mdt"
+    }
+  }
+}

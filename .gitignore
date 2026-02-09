@@ -6,6 +6,9 @@ out
 dist
 *.tgz
 
+# generated type declarations from .mdt files
+*.mdt.d.ts
+
 # code coverage
 coverage
 *.lcov
@@ -35,3 +38,5 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 .claude
 .claude-flow
+
+*.vsix

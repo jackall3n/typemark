@@ -1,0 +1,17 @@
+---
+interface Props {
+    user: {
+        hasSignedUp: boolean;
+        isAdmin: boolean;
+        tasks: string[];
+    }
+}
+---
+
+Hello, ${user.firstName}. ${user.hasSignedUp ? "You have signed up for the event." : "You have not signed up for the event."}
+
+${user.isAdmin ? `
+You are an admin. You can do the following tasks:
+${user.tasks.map(task => ` * ${task}`).join("\n")}
+` : `
+`}

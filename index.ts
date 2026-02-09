@@ -1,1 +1,1 @@
-console.log("Hello via Bun!");
+export * from "./packages/typemark/src/index.ts";

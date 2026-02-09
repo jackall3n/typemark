@@ -1,0 +1,19 @@
+---
+interface Hobby {
+    name: string;
+    description: string;
+}
+
+interface Props {
+    user: {
+        firstName: string;
+        age: number;
+        hobbies: Hobby[];
+    }
+}
+---
+
+Hello, ${user.firstName}. You are ${user.age}!
+
+I've heard you really like: 
+${user.hobbies.map(hobby => ` * ${hobby.name}: ${hobby.description}`).join("\n")}

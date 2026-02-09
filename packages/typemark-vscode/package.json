@@ -1,0 +1,46 @@
+{
+  "name": "typemark-vscode",
+  "version": "0.1.0",
+  "displayName": "Typemark",
+  "description": "Syntax highlighting for .mdt (Markdown Template) files",
+  "publisher": "typemark",
+  "icon": "icons/logo.png",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "files": [
+    "package.json",
+    "language-configuration.json",
+    "syntaxes",
+    "icons"
+  ],
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "mdt",
+        "aliases": [
+          "Markdown Template",
+          "mdt"
+        ],
+        "extensions": [
+          ".mdt"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "dark": "./icons/mdt.svg",
+          "light": "./icons/mdt-light.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "mdt",
+        "scopeName": "source.mdt",
+        "path": "./syntaxes/mdt.tmLanguage.json"
+      }
+    ]
+  }
+}
